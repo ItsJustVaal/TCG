@@ -1,0 +1,58 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build artifacts
+/build/
+bin/
+*.log
+
+# Dependency directories (if using vendoring)
+vendor/
+
+# Go modules cache
+go.sum
+go.mod
+
+# Editor + system files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Env + config
+.env
+.env.local
+.env.*.local
+.envrc
+*.secret
+
+# Docker
+docker-compose.override.yml
+*.pid
+
+# Database volumes or dumps
+*.db
+*.sqlite
+*.sql
+pgdata/
+postgres-data/
+migrations/*.lock
+
+# React / Frontend builds
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+
+# Test artifacts
+coverage.out
+
+# Generated code (sqlc, proto, etc.)
+internal/db/sqlc/*.gen.go
