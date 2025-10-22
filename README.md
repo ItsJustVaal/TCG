@@ -18,12 +18,17 @@ Go, Chi, PostgreSQL, sqlc, Goose
 ## Project Structure
 
 ```bash
-├── api/               # Route handlers
-├── cmd/api/           # Main server entry point
-├── configs/           # Config/env loading
-├── frontend/          # (Optional) React app
-├── internal/          # App logic (db, cache, etc.)
-├── scripts/           # Utility scripts
+├── api/                 # Route handlers
+├── cmd/api/             # Main server entry point
+├── configs/             # Config/env loading
+├── frontend/            # (Optional) React app
+├── internal/            # App logic (db, cache, etc.)
+├── internal/migrations  # Goose migrations
+├── internal/queries     # SQLC queries
+├── internal/schema      # SQLC schema dump
+├── scripts/             # Utility scripts
+├── models/              # Structs
+├── test/                # Go tests
 ├── docker-compose.yml
 ├── .env
 ```
