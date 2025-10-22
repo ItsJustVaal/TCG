@@ -56,3 +56,17 @@ coverage.out
 
 # Generated code (sqlc, proto, etc.)
 internal/db/sqlc/*.gen.go
+
+# 🔧 Additions
+
+# 1. Temporary or backup files
+*.tmp
+*.bak
+*.orig
+
+# 2. Go profiling / race detector output
+*.pprof
+*.prof
+
+# 3. SQLC config cache
+.sqlc.json
