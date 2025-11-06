@@ -7,30 +7,40 @@ This will allow users to know which cards to keep or stock up on based on curren
 ## Features
 
 - PostgreSQL database for storing sets, cards, decks, etc.
-- REST API for querying cards and decks by usage, archetype etc.
+- FastAPI REST API for querying cards, sets, and decks by usage, archetype, and more.
+- Async SQLAlchemy 2.0 + asyncpg for database access.
+- Redis for caching common queries (e.g., popular cards per set).
+- Alembic for schema migrations.
+- uvicorn for ASGI serving and concurrency.
 
 ## Current Technologies Used
 
-Go, Chi, PostgreSQL, sqlc, Goose
-
----
+Python (FastAPI, SQLAlchemy, Alembic, asyncpg, Redis), PostgreSQL, Docker Compose
 
 ## Project Structure
 
 ```bash
-├── api/                 # Route handlers
-├── cmd/api/             # Main server entry point
-├── configs/             # Config/env loading
-├── frontend/            # (Optional) React app
-├── internal/            # App logic (db, cache, etc.)
-├── internal/migrations  # Goose migrations
-├── internal/queries     # SQLC queries
-├── internal/schema      # SQLC schema dump
-├── scripts/             # Utility scripts
-├── models/              # Structs
-├── test/                # Go tests
-├── docker-compose.yml
-├── .env
+├── app/
+│   ├── api/                 # Routers (v1), deps, middleware
+│   │   ├── v1/
+│   │   └── middleware/
+│   ├── core/                # settings/config, logging, startup events
+│   ├── db/                  # session, base, repositories
+│   │   ├── models/          # SQLAlchemy models
+│   │   └── seed/            # optional seed data
+│   ├── schemas/             # Pydantic models (request/response)
+│   ├── services/            # business logic, caching, search, etc.
+│   │   └── ingest/          # your “scraper” & card importers live here
+│   ├── migrations/          # Alembic
+│   ├── main.py              # FastAPI app instance
+│   └── __init__.py
+│
+├── frontend/                # React (or other)
+├── scripts/                 # admin/ops scripts (invoke/Make targets call these)
+├── tests/
+│   ├── unit/
+│   └── integration/
+│
 ```
 
 ## Work In Progress

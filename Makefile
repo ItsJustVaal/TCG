@@ -5,52 +5,55 @@ export
 DB_CONTAINER=TCGINFO
 SCHEMA_FILE=db/schema.sql
 
+# -------------------------------
+# Infrastructure (Docker)
+# -------------------------------
 
 db-up: # Run the Postgres database and Adminer UI
 	docker compose up -d
 
-
 db-down: # Stop the database containers
 	docker compose down
 
+# -------------------------------
+# Migrations (Alembic)
+# -------------------------------
 
-migration-new: # Create a new migration
+migration-new: # Create a new Alembic migration
 	@read -p "Enter migration name: " name ; \
-	goose -dir internal/db/migrations create $$name sql
+	alembic revision --autogenerate -m "$$name"
 
-
-migrate-up: # Apply all migrations
-	goose -dir internal/db/migrations postgres "$(DB_URL)" up
-
+migrate-up: # Apply all migrations (upgrade to head)
+	alembic upgrade head
 
 migrate-down: # Roll back one migration (use with caution)
-	goose -dir internal/db/migrations postgres "$(DB_URL)" down
+	alembic downgrade -1
 
+migrate-reset: # Reset DB to base then re-apply all migrations (dev only)
+	alembic downgrade base && alembic upgrade head
 
-migrate-reset: # Roll back all migrations (dev only)
-	goose -dir internal/db/migrations postgres "$(DB_URL)" reset
+# -------------------------------
+# Schema (for reference / tooling)
+# -------------------------------
 
-
-schema-dump: # Dump the live schema to schema.sql (used by sqlc)
+schema-dump: # Dump the live schema to schema.sql
 	pg_dump --schema-only --no-owner --no-privileges -U $(POSTGRES_USER) -h $(POSTGRES_HOST) -d $(POSTGRES_DB) > $(SCHEMA_FILE)
 
+# -------------------------------
+# API Dev Utilities (FastAPI)
+# -------------------------------
 
-sqlc-generate: # Generate Go code from SQL files
-	sqlc generate
+api-run: # Run FastAPI dev server with reload
+	uvicorn app.main:app --reload
 
+lint: # Lint (ruff)
+	ruff check .
 
-gen: # Chain schema update + sqlc
-	make schema-dump && make sqlc-generate
+format: # Format (black)
+	black .
 
-lint: # Run Go linter
-	go fmt ./...
-
-test: # Run Go tests
-	go test ./...
-
-
-build: # Build the Go binary
-	go build -o bin/tcg cmd/api/main.go
+test: # Run tests (pytest)
+	pytest -q
 
 # Default target
 .DEFAULT_GOAL := help

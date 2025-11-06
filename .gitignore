@@ -1,32 +1,31 @@
-# Binaries
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.out
+# Python bytecode / build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
 
-# Go build artifacts
-/build/
-bin/
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Logs
 *.log
 
-# Dependency directories (if using vendoring)
-vendor/
-
-# Go modules cache
-go.sum
-go.mod
-
-# Editor + system files
+# IDE / Editor / System files
 .DS_Store
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# Env + config
+# Env & secrets
 .env
 .env.local
 .env.*.local
@@ -45,28 +44,46 @@ pgdata/
 postgres-data/
 migrations/*.lock
 
-# React / Frontend builds
+# Alembic versions
+app/migrations/versions/__pycache__/
+app/migrations/versions/*.pyc
+
+# Frontend builds (React or other)
 frontend/node_modules/
 frontend/dist/
 frontend/build/
 frontend/.env
 
-# Test artifacts
-coverage.out
+# Test / Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+coverage.xml
+*.cover
+*.coverage
+.cache/
+nosetests.xml
+junit*.xml
 
-# Generated code (sqlc, proto, etc.)
-internal/db/sqlc/*.gen.go
+# Lint / Type checking
+.mypy_cache/
+ruff_cache/
+.dmypy.json
+.pytype/
 
-# 🔧 Additions
-
-# 1. Temporary or backup files
+# Temporary or backup files
 *.tmp
 *.bak
 *.orig
 
-# 2. Go profiling / race detector output
-*.pprof
+# Reports / Profiling
 *.prof
+*.profile
+*.pprof
 
-# 3. SQLC config cache
-.sqlc.json
+# Jupyter / notebooks (optional)
+.ipynb_checkpoints/
+
+# Project specific
+out/
+scripts/__pycache__/

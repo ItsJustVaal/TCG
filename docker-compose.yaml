@@ -1,24 +1,33 @@
 services:
   db:
-    image: postgres
+    image: postgres:16-alpine
+    container_name: ${CONTAINER_NAME}
+    restart: always
     env_file:
       - .env
-    restart: always
-    container_name: ${CONTAINER_NAME}
-    ports:
-      - ${DB_PORTS}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - ${DB_PORTS}
     volumes:
-      - ${DB_VOLUME}
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   adminer:
-    image: adminer
+    image: adminer:4
     restart: always
     ports:
       - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres-data:
